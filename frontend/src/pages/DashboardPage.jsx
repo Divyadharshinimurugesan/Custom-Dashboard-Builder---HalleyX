@@ -598,6 +598,7 @@ export default function DashboardPage() {
     try {
       // Fetch ALL orders once — filtering is done client-side for perfect consistency
       const [ordRes, dbRes] = await Promise.all([
+        console.log("ORDERS RESPONSE:", ordRes.data);
         getOrders({ limit: 2000 }),
         getDashboard(),
       ]);
