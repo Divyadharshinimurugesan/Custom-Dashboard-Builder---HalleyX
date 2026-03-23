@@ -18,7 +18,7 @@ Custom Dashboard Builder is a business analytics platform that allows users to:
 ## Demo Video
   
 The uploaded video file has been compressed to meet the required file size limit, so the visual quality may be slightly reduced. 
-Therefore, I have uploaded the project demo video through the Google Drive link below.
+For this reason, I have provided the project demo video through the Google Drive link below.
 
 Kindly refer to the link below for the project demonstration.
 
