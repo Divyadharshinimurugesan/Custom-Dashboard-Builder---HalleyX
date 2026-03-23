@@ -15,6 +15,17 @@ Custom Dashboard Builder is a business analytics platform that allows users to:
 
 ---
 
+## Demo Video
+  
+The uploaded video file has been compressed to meet the required file size limit, so the visual quality may be slightly reduced. 
+Therefore, I have uploaded the project demo video through the Google Drive link below.
+
+Kindly refer to the link below for the project demonstration.
+
+**Google Drive Video Link:** https://drive.google.com/file/d/1m9nP06XiszBq6JiuwmjB-1ybW79rEs1R/view?usp=sharing
+
+---
+
 ## Features
 
 - **Dashboard Builder** — Drag, drop, and resize widgets on a 12-column responsive grid
@@ -245,9 +256,9 @@ Grid: Desktop = 12 cols · Tablet = 8 cols · Mobile = 4 cols
 ---
 
 ## Additional Improvements
-1.Smart Insights Panel
+- Smart Insights Panel
 Automatically analyzes order data and displays key insights such as top-selling products, highest revenue day, and most frequent customers. This helps users quickly understand business performance without manual analysis.
-2.Real-Time Search & Filtering
+- Real-Time Search & Filtering
 Provides instant search across customer name, email, product, and phone number with dynamic filtering. Results update in real-time without page reload, improving usability and efficiency.
-3.KPI Percentage Comparison
+- KPI Percentage Comparison
 KPI cards display not only current values but also percentage change compared to the previous period (e.g., +8%). This enables users to easily track growth trends and performance changes.
