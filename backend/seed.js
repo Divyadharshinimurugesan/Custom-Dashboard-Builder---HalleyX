@@ -19,7 +19,7 @@ const randNum = (mn, mx) => Math.floor(Math.random() * (mx - mn + 1)) + mn;
 const genDate = (daysAgo) => { const d = new Date(); d.setDate(d.getDate() - daysAgo); d.setHours(randNum(8,20), randNum(0,59)); return d; };
 
 const orders = [];
-for (let i = 0; i < 50; i++) {
+for (let i = 0; i < 10; i++) {
   const fn = rand(FIRST), ln = rand(LAST);
   const cityIdx  = randNum(0, CITIES.length - 1);
   const product  = rand(PRODUCTS);
