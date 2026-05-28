@@ -40,4 +40,8 @@ export var saveDashboard = function(data) { return api.post('/dashboard', data);
 
 export var getAnalytics = function(range) { return api.get('/analytics', { params: { range: range } }); };
 
+// ── Auth ──────────────────────────────────────────────────────────────────────
+export var loginUser    = function(data) { return api.post('/auth/login', data); };
+export var registerUser = function(data) { return api.post('/auth/register', data); };
+
 export default api;

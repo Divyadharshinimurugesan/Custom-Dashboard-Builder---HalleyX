@@ -1,12 +1,13 @@
 import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { SessionContext } from '../App';
+import { loginUser, registerUser } from '../api/api'; // ← change path if needed
 
 export default function LoginPage() {
-  const { login, register, checkCredentials } = useContext(SessionContext);
-  const navigate = useNavigate();
+  const { login } = useContext(SessionContext);
+  const navigate  = useNavigate();
 
-  const [tab,      setTab]      = useState('login'); // 'login' | 'signup'
+  const [tab,      setTab]      = useState('login');
   const [name,     setName]     = useState('');
   const [email,    setEmail]    = useState('');
   const [password, setPassword] = useState('');
@@ -22,108 +23,74 @@ export default function LoginPage() {
     setPassword('');
   };
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
-  setError('');
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError('');
 
-  if (tab === 'signup' && !name.trim()) {
-    setError('Please fill the field');
-    return;
-  }
+    // ── Validation ─────────────────────────────────────────────────────────
+    if (tab === 'signup' && !name.trim()) { setError('Please fill the field'); return; }
+    if (!email.trim())                    { setError('Please fill the field'); return; }
+    if (!email.includes('@'))             { setError('Enter a valid email address'); return; }
+    if (!password)                        { setError('Please fill the field'); return; }
+    if (password.length < 6)             { setError('Password must be at least 6 characters'); return; }
 
-  if (!email.trim()) {
-    setError('Please fill the field');
-    return;
-  }
+    setLoading(true);
 
-  if (!email.includes('@')) {
-    setError('Enter a valid email address');
-    return;
-  }
+    try {
+      if (tab === 'login') {
+        // ── Real backend login ────────────────────────────────────────────
+        const res = await loginUser({
+          email:    email.trim().toLowerCase(),
+          password: password,
+        });
 
-  if (!password) {
-    setError('Please fill the field');
-    return;
-  }
+        const token = res.data.token;
+        const user  = res.data.data || { email: email.trim().toLowerCase() };
 
-  if (password.length < 6) {
-    setError('Password must be at least 6 characters');
-    return;
-  }
-
-  setLoading(true);
-
-  try {
-
-    if (tab === 'login') {
-
-      const response = await fetch(
-        `${process.env.REACT_APP_API_URL}/api/auth/login`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            email: email.trim(),
-            password
-          })
+        if (!token) {
+          setError('Login failed: no token received from server');
+          setLoading(false);
+          return;
         }
-      );
 
-      const data = await response.json();
+        // Save token → api.js interceptor sends it on every future request
+        localStorage.setItem('token', token);
+        // Save user info → app knows who is logged in
+        localStorage.setItem('user', JSON.stringify(user));
 
-      if (!response.ok) {
-        throw new Error(data.message || 'Login failed');
+        // Tell SessionContext the user is logged in (keeps nav/guards working)
+        login(user.email);
+
+      } else {
+        // ── Real backend register ─────────────────────────────────────────
+        const res = await registerUser({
+          name:     name.trim(),
+          email:    email.trim().toLowerCase(),
+          password: password,
+        });
+
+        const token = res.data.token;
+        const user  = res.data.data || { email: email.trim().toLowerCase() };
+
+        if (!token) {
+          setError('Registration failed: no token received from server');
+          setLoading(false);
+          return;
+        }
+
+        localStorage.setItem('token', token);
+        localStorage.setItem('user', JSON.stringify(user));
+        login(user.email);
       }
 
-      // SAVE TOKEN
-      localStorage.setItem('token', data.token);
+      // Navigate to dashboard only AFTER token is saved
+      navigate('/dashboard', { replace: true });
 
-      // SAVE USER
-      localStorage.setItem('user', JSON.stringify(data.user));
-
-      login(data.user.email);
-
-    } else {
-
-      const response = await fetch(
-        `${process.env.REACT_APP_API_URL}/api/auth/register`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            name: name.trim(),
-            email: email.trim().toLowerCase(),
-            password
-          })
-        }
-      );
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || 'Registration failed');
-      }
-
-      // SAVE TOKEN
-      localStorage.setItem('token', data.token);
-
-      // SAVE USER
-      localStorage.setItem('user', JSON.stringify(data.user));
-
-      login(data.user.email);
+    } catch (err) {
+      setError(err.message || 'Something went wrong. Please try again.');
+      setLoading(false);
     }
-
-    navigate('/dashboard', { replace: true });
-
-  } catch (err) {
-    setError(err.message);
-    setLoading(false);
-  }
-};
+  };
 
   const ic = (val) =>
     `w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors ${
