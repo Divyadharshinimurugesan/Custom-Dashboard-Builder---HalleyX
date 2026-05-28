@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { SessionContext } from '../App';
-import { loginUser, registerUser } from '../api/api'; // ← change path if needed
+import { loginUser, registerUser } from '../services/api'; // ← change path if needed
 
 export default function LoginPage() {
   const { login } = useContext(SessionContext);
