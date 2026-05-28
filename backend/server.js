@@ -18,8 +18,9 @@ connectDB();
 
 app.use(cors({
   origin: [
-    'http://localhost:3000',
-    'https://custom-dashboard-builder-halley-x.vercel.app'
+    "http://localhost:3000",
+    "https://custom-dashboard-builder-halley-x.vercel.app",
+    "https://custom-dashboard-builder-halley-p1j6esovh.vercel.app"
   ],
   credentials: true
 }));
