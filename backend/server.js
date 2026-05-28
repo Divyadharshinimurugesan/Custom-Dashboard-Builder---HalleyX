@@ -18,7 +18,6 @@ connectDB();
 
 const allowedOrigins = [
   'http://localhost:3000',
-  'https://custom-dashboard-builder-halley-bj8ek7bz2.vercel.app',
   process.env.FRONTEND_URL
 ].filter(Boolean);
 
