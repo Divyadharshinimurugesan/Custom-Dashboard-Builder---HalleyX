@@ -1,67 +1,43 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: `${process.env.REACT_APP_API_URL}/api`,
+  baseURL: process.env.REACT_APP_API_URL + '/api',
   headers: { 'Content-Type': 'application/json' }
 });
 
-api.interceptors.response.use(
-  res => res,
-  err => Promise.reject(new Error(err.response?.data?.message || 'Something went wrong'))
-);
-
-// Orders
-export const getOrders   = (parimport axios from 'axios';
-
-const api = axios.create({
-  baseURL: `${process.env.REACT_APP_API_URL}/api`,
-  headers: { 'Content-Type': 'application/json' }
-});
-
-// ✅ Attach JWT token to every request automatically
 api.interceptors.request.use(
-  (config) => {
-    const token = localStorage.getItem('token');
+  function(config) {
+    var token = localStorage.getItem('token');
     if (token) {
-      config.headers['Authorization'] = `Bearer ${token}`;
+      config.headers['Authorization'] = 'Bearer ' + token;
     }
     return config;
   },
-  (error) => Promise.reject(error)
-);
-
-// ✅ Better error handling — log the real error for debugging
-api.interceptors.response.use(
-  res => res,
-  err => {
-    console.error('API Error:', err.response?.status, err.response?.data);
-    return Promise.reject(new Error(err.response?.data?.message || 'Something went wrong'));
+  function(error) {
+    return Promise.reject(error);
   }
 );
 
-// Orders
-export const getOrders   = (params)   => api.get('/orders', { params });
-export const createOrder = (data)     => api.post('/orders', data);
-export const updateOrder = (id, data) => api.put(`/orders/${id}`, data);
-export const deleteOrder = (id)       => api.delete(`/orders/${id}`);
+api.interceptors.response.use(
+  function(res) { return res; },
+  function(err) {
+    console.error('API Error:', err.response);
+    return Promise.reject(new Error(
+      (err.response && err.response.data && err.response.data.message)
+        ? err.response.data.message
+        : 'Something went wrong'
+    ));
+  }
+);
 
-// Dashboard
-export const getDashboard  = ()     => api.get('/dashboard');
-export const saveDashboard = (data) => api.post('/dashboard', data);
+export var getOrders   = function(params)   { return api.get('/orders', { params: params }); };
+export var createOrder = function(data)     { return api.post('/orders', data); };
+export var updateOrder = function(id, data) { return api.put('/orders/' + id, data); };
+export var deleteOrder = function(id)       { return api.delete('/orders/' + id); };
 
-// Analytics
-export const getAnalytics = (range) => api.get('/analytics', { params: { range } });
+export var getDashboard  = function()     { return api.get('/dashboard'); };
+export var saveDashboard = function(data) { return api.post('/dashboard', data); };
 
-export default api;ams)   => api.get('/orders', { params });
-export const createOrder = (data)     => api.post('/orders', data);
-export const updateOrder = (id, data) => api.put(`/orders/${id}`, data);
-export const deleteOrder = (id)       => api.delete(`/orders/${id}`);
-
-// Dashboard
-export const getDashboard  = ()     => api.get('/dashboard');
-export const saveDashboard = (data) => api.post('/dashboard', data);
-
-// Analytics
-export const getAnalytics = (range) => api.get('/analytics', { params: { range } });
+export var getAnalytics = function(range) { return api.get('/analytics', { params: { range: range } }); };
 
 export default api;
