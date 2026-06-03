@@ -213,18 +213,7 @@ export default function LoginPage() {
               </button>
             </form>
 
-            {/* Default account hint — only on login tab */}
-            {tab === 'login' && (
-              <div className="mt-5 pt-4 border-t border-gray-100">
-                <p className="text-xs text-gray-400 text-center mb-2">Default account</p>
-                <button
-                  onClick={() => { setEmail('admin@orderflow.com'); setPassword('ad_12@34'); setError(''); }}
-                  className="w-full flex items-center justify-between px-3 py-2 rounded-lg bg-gray-50 hover:bg-blue-50 border border-gray-100 hover:border-blue-200 transition-colors">
-                  <span className="text-xs font-medium text-gray-600">Admin</span>
-                  <span className="text-xs text-gray-400 font-mono">admin@orderflow.com</span>
-                </button>
-              </div>
-            )}
+            
           </div>
         </div>
 
